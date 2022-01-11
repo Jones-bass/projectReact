@@ -1,11 +1,10 @@
-import { useRef } from "react";
+import { useRef } from 'react';
 
-
-export default function useDebouncePromise(fn, delay) {
+export default function useDebouncedPromise(fn, delay) {
   let timeoutRef = useRef(null);
 
   function handler(...params) {
-    return new Promise(async (res, rej) => {
+    return new Promise((resolve, reject) => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
@@ -13,9 +12,9 @@ export default function useDebouncePromise(fn, delay) {
       timeoutRef.current = window.setTimeout(async () => {
         try {
           const response = await fn(...params);
-          res(response)
-        } catch (e) {
-          rej(e);
+          resolve(response)
+        } catch(e) {
+          reject(e);
         }
       }, delay);
     });

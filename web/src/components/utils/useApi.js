@@ -1,23 +1,18 @@
+import { useState } from 'react';
+import axios from 'axios';
+import useDebouncedPromise from 'components/utils/useDebouncedPromise';
 
-import axios from "axios";
-import { useState } from "react";
-import useDebouncePromise from "./useDebouncePromise";
-
-const initialResquestInfo = {
-  err: null,
+const initialRequestInfo = {
+  error: null,
   data: null,
   loading: false,
-}
+};
 
 export default function useApi(config) {
-  const [requestInfo, setRequestInfo] = useState(initialResquestInfo);
-  const debounceAxios = useDebouncePromise(axios, config.debounceDelay);
+  const [requestInfo, setRequestInfo] = useState(initialRequestInfo);
+  const debouncedAxios = useDebouncedPromise(axios, config.debounceDelay);
 
   async function call(localConfig) {
-    setRequestInfo({
-      ...initialResquestInfo,
-      loading: true,
-    });
     let response = null;
 
     const finalConfig = {
@@ -26,17 +21,24 @@ export default function useApi(config) {
       ...localConfig,
     };
 
-    const fn = finalConfig.debounce ? debounceAxios : axios;
-    
-    try {
-      response = await fn (finalConfig);
+    if (!finalConfig.quietly) {
       setRequestInfo({
-        ...initialResquestInfo,
+        ...initialRequestInfo,
+        loading: true,
+      });
+    }
+
+    const fn = finalConfig.debounced ? debouncedAxios : axios;
+
+    try {
+      response = await fn(finalConfig);
+      setRequestInfo({
+        ...initialRequestInfo,
         data: response.data,
       });
     } catch (error) {
-      setRequestInfo({ 
-        ...initialResquestInfo,
+      setRequestInfo({
+        ...initialRequestInfo,
         error,
       });
     }
@@ -44,10 +46,8 @@ export default function useApi(config) {
     if (config.onCompleted) {
       config.onCompleted(response);
     }
+    return response;
   }
 
-  return [
-    call,
-    requestInfo
-  ]
+  return [call, requestInfo];
 }

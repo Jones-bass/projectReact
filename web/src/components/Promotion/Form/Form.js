@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import useApi from 'components/utils/useApi';
 import './Form.css';
@@ -11,9 +11,9 @@ const initialValue = {
 }
 
 const PromotionForm = ({ id }) => {
-  const [values, setValues] = useState(id ? null : initialValue);
+  const [values, setValues] = useState(id ? null: initialValue);
   const history = useHistory();
-  const [load, loadInfo] = useApi({
+  const [load] = useApi({
     url: `/promotions/${id}`,
     method: 'get',
     onCompleted: (response) => {
@@ -35,6 +35,7 @@ const PromotionForm = ({ id }) => {
     if (id) {
       load();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   function onChange(ev) {
@@ -57,10 +58,10 @@ const PromotionForm = ({ id }) => {
       <h2>Nova Promoção</h2>
       {!values
         ? (
-          <div>Pagina Carregando...</div>
+          <div>Carregando...</div>
         ) : (
           <form onSubmit={onSubmit}>
-            {saveInfo.loading && <p>Salvando...</p>}
+            {saveInfo.loading && <span>Salvando dados...</span>}
             <div className="promotion-form__group">
               <label htmlFor="title">Título</label>
               <input id="title" name="title" type="text" onChange={onChange} value={values.title} />

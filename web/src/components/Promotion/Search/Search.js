@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
+import useApi from 'components/utils/useApi';
 import { Link } from 'react-router-dom';
 
 import PromotionList from '../List/List';
-import useApi from 'components/utils/useApi';
 import './Search.css';
 
 const PromotionSearch = () => {
   const mountRef = useRef(null);
   const [search, setSearch] = useState('');
   const [load, loadInfo] = useApi({
-    debounceDelay: 300, 
+    debounceDelay: 300,
     url: '/promotions',
     method: 'get',
     params: {
@@ -28,7 +28,7 @@ const PromotionSearch = () => {
     if (!mountRef.current) {
       mountRef.current = true;
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
   return (
@@ -46,8 +46,9 @@ const PromotionSearch = () => {
       />
       <PromotionList
         promotions={loadInfo.data}
-        loading={loadInfo.loading} 
-        error={loadInfo.error}/>
+        loading={loadInfo.loading}
+        error={loadInfo.error}
+      />
     </div>
   );
 };
