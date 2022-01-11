@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
 import PromotionModal from '../Modal/Modal';
 import PromotionCard from '../Card/Card';
@@ -37,3 +38,24 @@ const PromotionList = ({ loading, error, promotions }) => {
 };
 
 export default PromotionList;
+=======
+import React from 'react';
+import PromotionCard from '../Card/Card';
+import './List.css';
+
+const PromotionList = ({ loading, promotions }) => {
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
+
+  return (
+    <div className="promotion-list">
+      {promotions.map((promotion) => (
+        <PromotionCard promotion={promotion} />
+      ))}
+    </div>
+  );
+}
+
+export default PromotionList;
+>>>>>>> 74f135c3ea100bb6b31843f4cef3e6f36fba192b
