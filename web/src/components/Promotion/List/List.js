@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState } from 'react';
 import PromotionModal from '../Modal/Modal';
 import PromotionCard from '../Card/Card';
@@ -9,14 +8,14 @@ const PromotionList = ({ loading, error, promotions }) => {
   const [promotionId, setPromotionId] = useState(null);
 
   if (error) {
-    return <div>Algo de errado não está certo</div>;
+    return <div>Algo deu errado...</div>;
   }
-  if (loading || promotions === null) {
+  if (promotions === null) {
     return <div>Carregando...</div>;
   }
 
   if (promotions.length === 0) {
-    return <div>Nenhum resultado encontrado</div>;
+    return <div>Nenhum item encontrado...</div>;
   }
 
   return (
@@ -27,6 +26,7 @@ const PromotionList = ({ loading, error, promotions }) => {
           onClickComments={() => setPromotionId(promotion.id)}
         />
       ))}
+      {loading && <div>Carregando mais promoções...</div>}
       {promotionId && (
         <PromotionModal
           promotionId={promotionId}
@@ -38,24 +38,3 @@ const PromotionList = ({ loading, error, promotions }) => {
 };
 
 export default PromotionList;
-=======
-import React from 'react';
-import PromotionCard from '../Card/Card';
-import './List.css';
-
-const PromotionList = ({ loading, promotions }) => {
-  if (loading) {
-    return <div>Carregando...</div>;
-  }
-
-  return (
-    <div className="promotion-list">
-      {promotions.map((promotion) => (
-        <PromotionCard promotion={promotion} />
-      ))}
-    </div>
-  );
-}
-
-export default PromotionList;
->>>>>>> 74f135c3ea100bb6b31843f4cef3e6f36fba192b
